@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tính Điểm Xét Tuyển ĐHBK TP.HCM 2025</title>
+    <style>
+        :root {
+            --primary: #00558e;
+            --secondary: #d9534f;
+            --bg: #f0f2f5;
+            --glass: rgba(255, 255, 255, 0.95);
+        }
+
+        body {
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background: linear-gradient(135deg, #e0eafc 0%, #cfdef3 100%);
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
+            margin: 0;
+            padding: 15px;
+            /* Giảm padding trên mobile */
+            box-sizing: border-box;
+        }
+
+        .container {
+            background: var(--glass);
+            backdrop-filter: blur(10px);
+            padding: 25px;
+            /* Tối ưu padding cho mobile */
+            border-radius: 20px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 500px;
+        }
+
+        h2 {
+            color: var(--primary);
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 1.5em;
+            /* Font size linh hoạt */
+            text-transform: uppercase;
+        }
+
+        /* Tabs cuộn ngang nếu màn hình quá nhỏ */
+        .tabs {
+            display: flex;
+            gap: 5px;
+            margin-bottom: 20px;
+            background: rgba(0, 0, 0, 0.05);
+            padding: 4px;
+            border-radius: 12px;
+            overflow-x: auto;
+        }
+
+        .tab {
+            flex: 1;
+            padding: 12px 5px;
+            text-align: center;
+            cursor: pointer;
+            border-radius: 8px;
+            transition: 0.3s;
+            font-weight: 600;
+            color: #666;
+            font-size: 0.85em;
+            white-space: nowrap;
+            /* Không xuống dòng trong tab */
+        }
+
+        .tab.active {
+            background: white;
+            color: var(--primary);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .input-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 6px;
+            font-weight: 600;
+            font-size: 0.85em;
+            color: #444;
+        }
+
+        input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid transparent;
+            border-radius: 10px;
+            background: white;
+            box-sizing: border-box;
+            font-size: 16px;
+            /* Chặn zoom tự động trên iOS */
+            transition: 0.3s;
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.05);
+        }
+
+        input:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+
+        /* Nút bấm to hơn cho Mobile */
+        .btn-group {
+            display: flex;
+            flex-direction: column;
+            /* Xếp chồng nút trên mobile */
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        button {
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(to right, #00558e, #0077c2);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            box-shadow: 0 4px 12px rgba(0, 85, 142, 0.2);
+        }
+
+        button.btn-clear {
+            background: #f8f9fa;
+            color: #6c757d;
+            border: 1px solid #dee2e6;
+            box-shadow: none;
+        }
+
+        .result-box {
+            margin-top: 25px;
+            padding: 20px;
+            background: #fff;
+            border-radius: 15px;
+            text-align: center;
+            display: none;
+            border: 1px solid #eef6fc;
+        }
+
+        .final-score {
+            font-size: 42px;
+            color: var(--secondary);
+            font-weight: 800;
+            margin: 5px 0;
+        }
+
+        .detail-card {
+            background: #f8f9fa;
+            padding: 12px;
+            border-radius: 10px;
+            margin-top: 15px;
+            text-align: left;
+        }
+
+        .detail-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 6px;
+            font-size: 0.85em;
+            color: #666;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        /* Tablet và PC: Nút nằm ngang */
+        @media (min-width: 480px) {
+            .btn-group {
+                flex-direction: row;
+            }
+
+            h2 {
+                font-size: 1.8em;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h2>Dự Toán Điểm BK 2025</h2>
+
+        <div class="tabs">
+            <div class="tab" id="tab-btn-1" onclick="switchTab(1)">Có ĐGNL</div>
+            <div class="tab" id="tab-btn-2" onclick="switchTab(2)">Không ĐGNL</div>
+            <div class="tab" id="tab-btn-3" onclick="switchTab(3)">Dùng SAT</div>
+        </div>
+
+        <div class="input-group">
+            <label>Tổng điểm thi THPT 3 môn:</label>
+            <input type="number" id="thpt" placeholder="Ví dụ: 25.5" inputmode="decimal">
+        </div>
+        <div class="input-group">
+            <label>Trung bình cộng Học bạ (Lớp 10,11,12):</label>
+            <input type="number" id="hocba" placeholder="Ví dụ: 8.5" inputmode="decimal">
+        </div>
+
+        <div id="tab1-fields">
+            <div class="input-group"><label>Điểm Ngôn ngữ:</label><input type="number" id="ngonngu" inputmode="numeric">
+            </div>
+            <div class="input-group"><label>Toán học (Hệ số 2):</label><input type="number" id="toanhoc"
+                    inputmode="numeric"></div>
+            <div class="input-group"><label>Tư duy KH:</label><input type="number" id="tuduykh" inputmode="numeric">
+            </div>
+        </div>
+
+        <div id="tab3-fields" class="hidden">
+            <div class="input-group"><label>Điểm SAT của bạn:</label><input type="number" id="sat_input"
+                    inputmode="numeric"></div>
+        </div>
+
+        <div class="btn-group">
+            <button onclick="calculate()">TÍNH & LƯU</button>
+            <button class="btn-clear" onclick="clearData()">XÓA DỮ LIỆU</button>
+        </div>
+
+        <div id="result" class="result-box">
+            <div style="font-weight: bold; color: #555; font-size: 0.8em;">ĐIỂM XÉT TUYỂN DỰ KIẾN (chưa bao gồm điểm
+                cộng và điểm ưu tiên)</div>
+            <div id="score_display" class="final-score">0.00</div>
+            <div class="detail-card">
+                <div class="detail-item"><span>Năng lực/SAT (70%):</span><strong id="detail-nl">0.00</strong></div>
+                <div class="detail-item"><span>TNTHPT (20%):</span><strong id="detail-thpt">0.00</strong></div>
+                <div class="detail-item"><span>Học bạ (10%):</span><strong id="detail-hb">0.00</strong></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Giữ nguyên logic JavaScript từ phiên bản trước
+        let currentTab = 1;
+        const bangSat = { 1600: 100, 1584: 99, 1568: 98, 1552: 97, 1536: 96, 1520: 95, 1504: 94, 1488: 93, 1472: 92, 1456: 91, 1440: 90, 1424: 89, 1408: 88, 1392: 87, 1376: 86, 1360: 85, 1344: 84, 1328: 83, 1312: 82, 1296: 81, 1280: 80, 1264: 79, 1248: 78, 1232: 77, 1216: 76, 1200: 75, 1184: 74 };
+
+        window.onload = function () {
+            const savedData = JSON.parse(localStorage.getItem('bk_admission_data'));
+            if (savedData) {
+                document.getElementById('thpt').value = savedData.thpt || "";
+                document.getElementById('hocba').value = savedData.hocba || "";
+                document.getElementById('ngonngu').value = savedData.ngonngu || "";
+                document.getElementById('toanhoc').value = savedData.toanhoc || "";
+                document.getElementById('tuduykh').value = savedData.tuduykh || "";
+                document.getElementById('sat_input').value = savedData.sat_input || "";
+                switchTab(savedData.currentTab || 1);
+                if (savedData.isCalculated) calculate(false);
+            } else { switchTab(1); }
+        };
+
+        function switchTab(n) {
+            currentTab = n;
+            document.querySelectorAll('.tab').forEach((t, i) => t.classList.toggle('active', i === n - 1));
+            document.getElementById('tab1-fields').classList.toggle('hidden', n !== 1);
+            document.getElementById('tab3-fields').classList.toggle('hidden', n !== 3);
+            saveToLocal();
+        }
+
+        function saveToLocal(isCalculated = false) {
+            const data = { currentTab, thpt: document.getElementById('thpt').value, hocba: document.getElementById('hocba').value, ngonngu: document.getElementById('ngonngu').value, toanhoc: document.getElementById('toanhoc').value, tuduykh: document.getElementById('tuduykh').value, sat_input: document.getElementById('sat_input').value, isCalculated };
+            localStorage.setItem('bk_admission_data', JSON.stringify(data));
+        }
+
+        function clearData() {
+            if (confirm("Xóa dữ liệu đã lưu?")) {
+                localStorage.removeItem('bk_admission_data');
+                location.reload();
+            }
+        }
+
+        function calculate(scroll = true) {
+            const thpt = parseFloat(document.getElementById('thpt').value) || 0;
+            const hb = parseFloat(document.getElementById('hocba').value) || 0;
+            const thpt_qd = (thpt / 3) * 10;
+            const hb_qd = hb * 10;
+            let nl_qd = 0;
+
+            if (currentTab === 1) {
+                const nn = parseFloat(document.getElementById('ngonngu').value) || 0;
+                const th = parseFloat(document.getElementById('toanhoc').value) || 0;
+                const td = parseFloat(document.getElementById('tuduykh').value) || 0;
+                nl_qd = (nn + th * 2 + td) / 15;
+            } else if (currentTab === 2) {
+                nl_qd = thpt_qd * 0.75;
+            } else {
+                const sat = parseInt(document.getElementById('sat_input').value) || 0;
+                const scores = Object.keys(bangSat).map(Number).sort((a, b) => b - a);
+                const closest = scores.find(s => s <= sat) || 1184;
+                nl_qd = bangSat[closest] || 0;
+            }
+
+            const final = (nl_qd * 0.7) + (thpt_qd * 0.2) + (hb_qd * 0.1);
+            document.getElementById('result').style.display = 'block';
+            document.getElementById('score_display').innerText = final.toFixed(2);
+            document.getElementById('detail-nl').innerText = nl_qd.toFixed(2);
+            document.getElementById('detail-thpt').innerText = thpt_qd.toFixed(2);
+            document.getElementById('detail-hb').innerText = hb_qd.toFixed(2);
+            saveToLocal(true);
+            if (scroll) window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+        }
+    </script>
+</body>
+
+</html>
