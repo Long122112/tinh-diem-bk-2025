@@ -4,13 +4,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tính Điểm Xét Tuyển ĐHBK TP.HCM 2025</title>
+    <title>Dự Toán Điểm Xét Tuyển ĐHBK 2025</title>
     <style>
         :root {
             --primary: #00558e;
             --secondary: #d9534f;
-            --bg: #f0f2f5;
             --glass: rgba(255, 255, 255, 0.95);
+            --error: #ff4d4f;
         }
 
         body {
@@ -22,7 +22,6 @@
             min-height: 100vh;
             margin: 0;
             padding: 15px;
-            /* Giảm padding trên mobile */
             box-sizing: border-box;
         }
 
@@ -30,23 +29,20 @@
             background: var(--glass);
             backdrop-filter: blur(10px);
             padding: 25px;
-            /* Tối ưu padding cho mobile */
             border-radius: 20px;
             box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
             width: 100%;
-            max-width: 500px;
+            max-width: 600px;
         }
 
         h2 {
             color: var(--primary);
             text-align: center;
             margin-bottom: 20px;
-            font-size: 1.5em;
-            /* Font size linh hoạt */
             text-transform: uppercase;
+            font-size: 1.4em;
         }
 
-        /* Tabs cuộn ngang nếu màn hình quá nhỏ */
         .tabs {
             display: flex;
             gap: 5px;
@@ -68,7 +64,6 @@
             color: #666;
             font-size: 0.85em;
             white-space: nowrap;
-            /* Không xuống dòng trong tab */
         }
 
         .tab.active {
@@ -77,48 +72,85 @@
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
         }
 
-        .input-group {
+        .section-title {
+            font-size: 0.9em;
+            font-weight: bold;
+            color: var(--primary);
+            margin: 15px 0 10px;
+            border-left: 4px solid var(--primary);
+            padding-left: 10px;
+        }
+
+        .hb-switch {
+            display: flex;
+            gap: 10px;
             margin-bottom: 15px;
+        }
+
+        .hb-option {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            text-align: center;
+            cursor: pointer;
+            font-size: 0.85em;
+            background: #f9f9f9;
+        }
+
+        .hb-option.active {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+
+        .grid-hb {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .input-group {
+            margin-bottom: 12px;
         }
 
         label {
             display: block;
-            margin-bottom: 6px;
+            margin-bottom: 5px;
             font-weight: 600;
-            font-size: 0.85em;
+            font-size: 0.8em;
             color: #444;
         }
 
-        input {
+        input,
+        select {
             width: 100%;
-            padding: 12px;
+            padding: 10px;
             border: 2px solid transparent;
-            border-radius: 10px;
+            border-radius: 8px;
             background: white;
             box-sizing: border-box;
-            font-size: 16px;
-            /* Chặn zoom tự động trên iOS */
+            font-size: 14px;
             transition: 0.3s;
             box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.05);
         }
 
-        input:focus {
-            outline: none;
-            border-color: var(--primary);
+        input.invalid {
+            border-color: var(--error);
+            background-color: #fff1f0;
         }
 
-        /* Nút bấm to hơn cho Mobile */
         .btn-group {
             display: flex;
             flex-direction: column;
-            /* Xếp chồng nút trên mobile */
             gap: 10px;
             margin-top: 20px;
         }
 
         button {
             width: 100%;
-            padding: 16px;
+            padding: 15px;
             background: linear-gradient(to right, #00558e, #0077c2);
             color: white;
             border: none;
@@ -126,14 +158,11 @@
             cursor: pointer;
             font-size: 16px;
             font-weight: bold;
-            box-shadow: 0 4px 12px rgba(0, 85, 142, 0.2);
         }
 
-        button.btn-clear {
-            background: #f8f9fa;
-            color: #6c757d;
-            border: 1px solid #dee2e6;
-            box-shadow: none;
+        button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
         }
 
         .result-box {
@@ -173,14 +202,9 @@
             display: none;
         }
 
-        /* Tablet và PC: Nút nằm ngang */
         @media (min-width: 480px) {
             .btn-group {
                 flex-direction: row;
-            }
-
-            h2 {
-                font-size: 1.8em;
             }
         }
     </style>
@@ -191,97 +215,151 @@
         <h2>Dự Toán Điểm BK 2025</h2>
 
         <div class="tabs">
-            <div class="tab" id="tab-btn-1" onclick="switchTab(1)">Có ĐGNL</div>
-            <div class="tab" id="tab-btn-2" onclick="switchTab(2)">Không ĐGNL</div>
-            <div class="tab" id="tab-btn-3" onclick="switchTab(3)">Dùng SAT</div>
+            <div class="tab active" onclick="switchTab(1)">Có ĐGNL</div>
+            <div class="tab" onclick="switchTab(2)">Không ĐGNL</div>
+            <div class="tab" onclick="switchTab(3)">Dùng SAT</div>
         </div>
 
+        <div class="section-title">CHỌN TỔ HỢP XÉT TUYỂN</div>
         <div class="input-group">
-            <label>Tổng điểm thi THPT 3 môn:</label>
-            <input type="number" id="thpt" placeholder="Ví dụ: 25.5" inputmode="decimal">
+            <select id="tohop" onchange="updateLabels()">
+                <option value="A00">A00 (Toán, Lý, Hóa)</option>
+                <option value="A01">A01 (Toán, Lý, Anh)</option>
+            </select>
         </div>
+
+        <div class="section-title">NHẬP ĐIỂM HỌC BẠ</div>
+        <div class="hb-switch">
+            <div class="hb-option active" id="opt-9mon" onclick="toggleHbInput('9mon')">Nhập chi tiết 9 môn</div>
+            <div class="hb-option" id="opt-tong" onclick="toggleHbInput('tong')">Nhập điểm tổng</div>
+        </div>
+
+        <div id="hb-9mon-container">
+            <div class="grid-hb">
+                <div class="input-group"><label>Toán 10</label><input type="number" class="hb-input" id="t10" step="0.1"
+                        oninput="validate(this)"></div>
+                <div class="input-group"><label>Lý 10</label><input type="number" class="hb-input" id="l10" step="0.1"
+                        oninput="validate(this)"></div>
+                <div class="input-group"><label id="label-m3-10">Hóa 10</label><input type="number" class="hb-input"
+                        id="m310" step="0.1" oninput="validate(this)"></div>
+                <div class="input-group"><label>Toán 11</label><input type="number" class="hb-input" id="t11" step="0.1"
+                        oninput="validate(this)"></div>
+                <div class="input-group"><label>Lý 11</label><input type="number" class="hb-input" id="l11" step="0.1"
+                        oninput="validate(this)"></div>
+                <div class="input-group"><label id="label-m3-11">Hóa 11</label><input type="number" class="hb-input"
+                        id="m311" step="0.1" oninput="validate(this)"></div>
+                <div class="input-group"><label>Toán 12</label><input type="number" class="hb-input" id="t12" step="0.1"
+                        oninput="validate(this)"></div>
+                <div class="input-group"><label>Lý 12</label><input type="number" class="hb-input" id="l12" step="0.1"
+                        oninput="validate(this)"></div>
+                <div class="input-group"><label id="label-m3-12">Hóa 12</label><input type="number" class="hb-input"
+                        id="m312" step="0.1" oninput="validate(this)"></div>
+            </div>
+        </div>
+
+        <div id="hb-tong-container" class="hidden">
+            <div class="input-group">
+                <label>Nhập điểm tổng 9 môn (Tối đa 90đ):</label>
+                <input type="number" id="hb_tong_9m" placeholder="Ví dụ: 81" step="0.1" oninput="validate(this)">
+            </div>
+        </div>
+
+        <div class="section-title">ĐIỂM THI TỐT NGHIỆP THPT</div>
         <div class="input-group">
-            <label>Trung bình cộng Học bạ (Lớp 10,11,12):</label>
-            <input type="number" id="hocba" placeholder="Ví dụ: 8.5" inputmode="decimal">
+            <input type="number" id="thpt" placeholder="Tổng điểm 3 môn (Ví dụ: 25.5)" step="0.01"
+                oninput="validate(this)">
         </div>
 
         <div id="tab1-fields">
-            <div class="input-group"><label>Điểm Ngôn ngữ:</label><input type="number" id="ngonngu" inputmode="numeric">
-            </div>
-            <div class="input-group"><label>Toán học (Hệ số 2):</label><input type="number" id="toanhoc"
-                    inputmode="numeric"></div>
-            <div class="input-group"><label>Tư duy KH:</label><input type="number" id="tuduykh" inputmode="numeric">
+            <div class="section-title">ĐIỂM THI ĐGNL ĐHQG-HCM</div>
+            <div class="grid-hb">
+                <div class="input-group"><label>Ngôn Ngữ</label><input type="number" id="ngonngu"
+                        oninput="validate(this)"></div>
+                <div class="input-group"><label>Toán </label><input type="number" id="toanhoc" oninput="validate(this)">
+                </div>
+                <div class="input-group"><label>Tư Duy KH</label><input type="number" id="tuduykh"
+                        oninput="validate(this)"></div>
             </div>
         </div>
 
         <div id="tab3-fields" class="hidden">
-            <div class="input-group"><label>Điểm SAT của bạn:</label><input type="number" id="sat_input"
-                    inputmode="numeric"></div>
+            <div class="section-title">CHỨNG CHỈ SAT</div>
+            <div class="input-group"><input type="number" id="sat_input" placeholder="Nhập điểm SAT (Ví dụ: 1440)"
+                    oninput="validate(this)"></div>
         </div>
 
         <div class="btn-group">
-            <button onclick="calculate()">TÍNH & LƯU</button>
-            <button class="btn-clear" onclick="clearData()">XÓA DỮ LIỆU</button>
+            <button id="calc-btn" onclick="calculate()">TÍNH & LƯU</button>
+            <button class="btn-clear" onclick="clearData()"
+                style="background:#f8f9fa; color:#666; border:1px solid #ddd;">XÓA DỮ LIỆU</button>
         </div>
 
         <div id="result" class="result-box">
-            <div style="font-weight: bold; color: #555; font-size: 0.8em;">ĐIỂM XÉT TUYỂN DỰ KIẾN (chưa bao gồm điểm
-                cộng và điểm ưu tiên)</div>
+            <div style="font-weight:bold; color:#555; font-size:0.8em;">ĐIỂM XÉT TUYỂN DỰ KIẾN (chưa bao gồm điểm ưu
+                tiên)</div>
             <div id="score_display" class="final-score">0.00</div>
             <div class="detail-card">
                 <div class="detail-item"><span>Năng lực/SAT (70%):</span><strong id="detail-nl">0.00</strong></div>
-                <div class="detail-item"><span>TNTHPT (20%):</span><strong id="detail-thpt">0.00</strong></div>
-                <div class="detail-item"><span>Học bạ (10%):</span><strong id="detail-hb">0.00</strong></div>
+                <div class="detail-item"><span>TNTHPT quy đổi (20%):</span><strong id="detail-thpt">0.00</strong></div>
+                <div class="detail-item"><span>Học bạ quy đổi (10%):</span><strong id="detail-hb">0.00</strong></div>
             </div>
         </div>
     </div>
 
     <script>
-        // Giữ nguyên logic JavaScript từ phiên bản trước
         let currentTab = 1;
+        let hbInputType = '9mon';
         const bangSat = { 1600: 100, 1584: 99, 1568: 98, 1552: 97, 1536: 96, 1520: 95, 1504: 94, 1488: 93, 1472: 92, 1456: 91, 1440: 90, 1424: 89, 1408: 88, 1392: 87, 1376: 86, 1360: 85, 1344: 84, 1328: 83, 1312: 82, 1296: 81, 1280: 80, 1264: 79, 1248: 78, 1232: 77, 1216: 76, 1200: 75, 1184: 74 };
 
-        window.onload = function () {
-            const savedData = JSON.parse(localStorage.getItem('bk_admission_data'));
-            if (savedData) {
-                document.getElementById('thpt').value = savedData.thpt || "";
-                document.getElementById('hocba').value = savedData.hocba || "";
-                document.getElementById('ngonngu').value = savedData.ngonngu || "";
-                document.getElementById('toanhoc').value = savedData.toanhoc || "";
-                document.getElementById('tuduykh').value = savedData.tuduykh || "";
-                document.getElementById('sat_input').value = savedData.sat_input || "";
-                switchTab(savedData.currentTab || 1);
-                if (savedData.isCalculated) calculate(false);
-            } else { switchTab(1); }
-        };
+        function toggleHbInput(type) {
+            hbInputType = type;
+            document.getElementById('opt-9mon').classList.toggle('active', type === '9mon');
+            document.getElementById('opt-tong').classList.toggle('active', type === 'tong');
+            document.getElementById('hb-9mon-container').classList.toggle('hidden', type !== '9mon');
+            document.getElementById('hb-tong-container').classList.toggle('hidden', type !== 'tong');
+            document.getElementById('result').style.display = 'none';
+        }
+
+        function updateLabels() {
+            const tohop = document.getElementById('tohop').value;
+            const text = tohop === 'A00' ? 'Hóa' : 'Anh';
+            document.getElementById('label-m3-10').innerText = text + ' 10';
+            document.getElementById('label-m3-11').innerText = text + ' 11';
+            document.getElementById('label-m3-12').innerText = text + ' 12';
+        }
+
+        function validate(input) {
+            if (parseFloat(input.value) < 0) input.classList.add('invalid');
+            else input.classList.remove('invalid');
+            document.getElementById('calc-btn').disabled = !!document.querySelector('.invalid');
+        }
 
         function switchTab(n) {
             currentTab = n;
             document.querySelectorAll('.tab').forEach((t, i) => t.classList.toggle('active', i === n - 1));
             document.getElementById('tab1-fields').classList.toggle('hidden', n !== 1);
             document.getElementById('tab3-fields').classList.toggle('hidden', n !== 3);
-            saveToLocal();
+            document.getElementById('result').style.display = 'none';
         }
 
-        function saveToLocal(isCalculated = false) {
-            const data = { currentTab, thpt: document.getElementById('thpt').value, hocba: document.getElementById('hocba').value, ngonngu: document.getElementById('ngonngu').value, toanhoc: document.getElementById('toanhoc').value, tuduykh: document.getElementById('tuduykh').value, sat_input: document.getElementById('sat_input').value, isCalculated };
-            localStorage.setItem('bk_admission_data', JSON.stringify(data));
-        }
-
-        function clearData() {
-            if (confirm("Xóa dữ liệu đã lưu?")) {
-                localStorage.removeItem('bk_admission_data');
-                location.reload();
+        function calculate() {
+            // 1. Tính học bạ quy đổi (10%)
+            let hb_qd = 0;
+            if (hbInputType === '9mon') {
+                let total = 0;
+                document.querySelectorAll('.hb-input').forEach(i => total += parseFloat(i.value) || 0);
+                hb_qd = (total / 9) * 10;
+            } else {
+                const tong9m = parseFloat(document.getElementById('hb_tong_9m').value) || 0;
+                hb_qd = (tong9m / 9) * 10;
             }
-        }
 
-        function calculate(scroll = true) {
-            const thpt = parseFloat(document.getElementById('thpt').value) || 0;
-            const hb = parseFloat(document.getElementById('hocba').value) || 0;
-            const thpt_qd = (thpt / 3) * 10;
-            const hb_qd = hb * 10;
+            // 2. Tính THPT quy đổi (20%)
+            const thpt_tong = parseFloat(document.getElementById('thpt').value) || 0;
+            const thpt_qd = (thpt_tong / 3) * 10;
+
+            // 3. Năng lực (70%)
             let nl_qd = 0;
-
             if (currentTab === 1) {
                 const nn = parseFloat(document.getElementById('ngonngu').value) || 0;
                 const th = parseFloat(document.getElementById('toanhoc').value) || 0;
@@ -297,14 +375,16 @@
             }
 
             const final = (nl_qd * 0.7) + (thpt_qd * 0.2) + (hb_qd * 0.1);
+
             document.getElementById('result').style.display = 'block';
             document.getElementById('score_display').innerText = final.toFixed(2);
             document.getElementById('detail-nl').innerText = nl_qd.toFixed(2);
             document.getElementById('detail-thpt').innerText = thpt_qd.toFixed(2);
             document.getElementById('detail-hb').innerText = hb_qd.toFixed(2);
-            saveToLocal(true);
-            if (scroll) window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+            window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
         }
+
+        function clearData() { if (confirm("Xóa dữ liệu?")) location.reload(); }
     </script>
 </body>
 
