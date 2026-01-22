@@ -239,39 +239,39 @@
         <div id="hb-9mon-container">
             <div class="grid-hb">
                 <div class="input-group"><label>Toán 10</label><input type="number" class="hb-input" id="t10" step="0.1"
-                        oninput="validateInput(this, 10)">
+                        data-max="10" oninput="validateInput(this)">
                     <div class="error-msg">Tối đa 10đ</div>
                 </div>
                 <div class="input-group"><label>Lý 10</label><input type="number" class="hb-input" id="l10" step="0.1"
-                        oninput="validateInput(this, 10)">
+                        data-max="10" oninput="validateInput(this)">
                     <div class="error-msg">Tối đa 10đ</div>
                 </div>
                 <div class="input-group"><label id="label-m3-10">Hóa 10</label><input type="number" class="hb-input"
-                        id="m310" step="0.1" oninput="validateInput(this, 10)">
+                        id="m310" step="0.1" data-max="10" oninput="validateInput(this)">
                     <div class="error-msg">Tối đa 10đ</div>
                 </div>
                 <div class="input-group"><label>Toán 11</label><input type="number" class="hb-input" id="t11" step="0.1"
-                        oninput="validateInput(this, 10)">
+                        data-max="10" oninput="validateInput(this)">
                     <div class="error-msg">Tối đa 10đ</div>
                 </div>
                 <div class="input-group"><label>Lý 11</label><input type="number" class="hb-input" id="l11" step="0.1"
-                        oninput="validateInput(this, 10)">
+                        data-max="10" oninput="validateInput(this)">
                     <div class="error-msg">Tối đa 10đ</div>
                 </div>
                 <div class="input-group"><label id="label-m3-11">Hóa 11</label><input type="number" class="hb-input"
-                        id="m311" step="0.1" oninput="validateInput(this, 10)">
+                        id="m311" step="0.1" data-max="10" oninput="validateInput(this)">
                     <div class="error-msg">Tối đa 10đ</div>
                 </div>
                 <div class="input-group"><label>Toán 12</label><input type="number" class="hb-input" id="t12" step="0.1"
-                        oninput="validateInput(this, 10)">
+                        data-max="10" oninput="validateInput(this)">
                     <div class="error-msg">Tối đa 10đ</div>
                 </div>
                 <div class="input-group"><label>Lý 12</label><input type="number" class="hb-input" id="l12" step="0.1"
-                        oninput="validateInput(this, 10)">
+                        data-max="10" oninput="validateInput(this)">
                     <div class="error-msg">Tối đa 10đ</div>
                 </div>
                 <div class="input-group"><label id="label-m3-12">Hóa 12</label><input type="number" class="hb-input"
-                        id="m312" step="0.1" oninput="validateInput(this, 10)">
+                        id="m312" step="0.1" data-max="10" oninput="validateInput(this)">
                     <div class="error-msg">Tối đa 10đ</div>
                 </div>
             </div>
@@ -279,32 +279,32 @@
         <div id="hb-tong-container" class="hidden">
             <div class="input-group">
                 <label>Nhập điểm tổng 9 môn (Tối đa 90đ):</label>
-                <input type="number" id="hb_tong_9m" placeholder="Ví dụ: 81" step="0.1"
-                    oninput="validateInput(this, 90)">
+                <input type="number" id="hb_tong_9m" placeholder="Ví dụ: 81" step="0.1" data-max="90"
+                    oninput="validateInput(this)">
                 <div class="error-msg">Tối đa 90đ</div>
             </div>
         </div>
         <div class="section-title">ĐIỂM THI TỐT NGHIỆP THPT</div>
         <div class="input-group">
-            <input type="number" id="thpt" placeholder="Tổng điểm 3 môn (Tối đa 30đ)" step="0.01"
-                oninput="validateInput(this, 30)">
+            <input type="number" id="thpt" placeholder="Tổng điểm 3 môn (Tối đa 30đ)" step="0.01" data-max="30"
+                oninput="validateInput(this)">
             <div class="error-msg">Tối đa 30đ</div>
         </div>
         <div id="tab1-fields">
             <div class="section-title">ĐIỂM THI ĐGNL ĐHQG-HCM</div>
             <div class="grid-hb">
-                <div class="input-group"><label>Ngôn Ngữ</label><input type="number" id="ngonngu"
-                        oninput="validateInput(this, 600)"></div>
-                <div class="input-group"><label>Toán </label><input type="number" id="toanhoc"
-                        oninput="validateInput(this, 300)"></div>
-                <div class="input-group"><label>Tư Duy KH</label><input type="number" id="tuduykh"
-                        oninput="validateInput(this, 300)"></div>
+                <div class="input-group"><label>Ngôn Ngữ</label><input type="number" id="ngonngu" data-max="600"
+                        oninput="validateInput(this)"></div>
+                <div class="input-group"><label>Toán </label><input type="number" id="toanhoc" data-max="300"
+                        oninput="validateInput(this)"></div>
+                <div class="input-group"><label>Tư Duy KH</label><input type="number" id="tuduykh" data-max="300"
+                        oninput="validateInput(this)"></div>
             </div>
         </div>
         <div id="tab3-fields" class="hidden">
             <div class="section-title">CHỨNG CHỈ SAT</div>
-            <div class="input-group"><input type="number" id="sat_input" placeholder="Ví dụ: 1440"
-                    oninput="validateInput(this, 1600)"></div>
+            <div class="input-group"><input type="number" id="sat_input" placeholder="Ví dụ: 1440" data-max="1600"
+                    oninput="validateInput(this)"></div>
         </div>
         <div class="btn-group">
             <button id="calc-btn" onclick="calculate()">TÍNH & LƯU</button>
@@ -333,9 +333,7 @@
                     const el = document.getElementById(id);
                     if (el) {
                         el.value = saved.inputs[id];
-                        // Kích hoạt validate ngay khi tải dữ liệu cũ
-                        const maxVal = el.classList.contains('hb-input') ? 10 : (el.id === 'sat_input' ? 1600 : (el.id === 'thpt' ? 30 : (el.id === 'hb_tong_9m' ? 90 : 600)));
-                        validateInput(el, maxVal, false);
+                        validateInput(el, false); // Validate ngay khi load dữ liệu cũ
                     }
                 });
                 document.getElementById('tohop').value = saved.tohop || 'A00';
@@ -352,18 +350,23 @@
             localStorage.setItem('bk_data_final_v2', JSON.stringify(data));
         }
 
-        function validateInput(input, max, shouldSave = true) {
+        function validateInput(input, shouldSave = true) {
             const val = parseFloat(input.value);
+            const max = parseFloat(input.getAttribute('data-max'));
             const errorMsg = input.parentNode.querySelector('.error-msg');
-            if (val < 0 || val > max) {
+
+            // Nếu có giá trị và nằm ngoài khoảng 0-max thì báo lỗi
+            const isInvalid = !isNaN(val) && (val < 0 || val > max);
+
+            if (isInvalid) {
                 input.classList.add('invalid');
                 if (errorMsg) errorMsg.style.display = 'block';
             } else {
                 input.classList.remove('invalid');
                 if (errorMsg) errorMsg.style.display = 'none';
             }
-            // Kiểm tra tổng quát để khóa nút
-            document.getElementById('calc-btn').disabled = !!document.querySelector('.invalid');
+            // Khóa nút nếu có bất kỳ ô nào bị invalid
+            document.getElementById('calc-btn').disabled = document.querySelectorAll('.invalid').length > 0;
             if (shouldSave) saveToLocal();
         }
 
@@ -425,7 +428,7 @@
             if (scroll) window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
         }
 
-        function clearData() { if (confirm("Xóa dữ liệu?")) { localStorage.removeItem('bk_data_final_v2'); localStorage.removeItem('bk_data_final_v2'); location.reload(); } }
+        function clearData() { if (confirm("Xóa dữ liệu?")) { localStorage.removeItem('bk_data_final_v2'); location.reload(); } }
     </script>
 </body>
 
